@@ -53,7 +53,18 @@ public class Graph {
     }
     for using VertexList as an input*/
 
-    public void dfs(int v){
+    public void callDfs(int v){
+        clearDfs();
+        dfs(v);
+    }
+
+    private void clearDfs() {
+        for (int i = 0; i < dvisited.length; i++) {
+            dvisited[i] = false;
+        }
+    }
+
+    private void dfs(int v){
        dvisited[v-1] = true;
         ArrayList<Vertex> neibs = vList.get(v-1).getNeibs();
         System.out.print(vList.get(v-1).getName()+" ");
@@ -75,7 +86,18 @@ public class Graph {
     }
     for using vertexList as an input*/
 
-    public void bfs(int v){
+    public void callBfs(int v){
+        clearBfs();
+        bfs(v);
+    }
+
+    private void clearBfs() {
+        for (int i = 0; i < bvisited.length; i++) {
+            bvisited[i] = false;
+        }
+    }
+
+    private void bfs(int v){
         bvisited[v-1] = true;
         q.enqueue(v);
         while (!q.isEmpty()){
