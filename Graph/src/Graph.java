@@ -7,10 +7,15 @@ public class Graph {
     int vCount;
     //Queue<VertexList> q = new Queue<>();
     Queue<Integer> q = new Queue<>();
+    private boolean[] dvisited;
+    private boolean[] bvisited;
+
 
     public Graph(ArrayList<VertexList> vList, int vCount){
         this.vList = new ArrayList<VertexList>(vList);     //(ArrayList<VertexList>)vList.clone()
         this.vCount = vCount;
+        dvisited = new boolean[vCount];
+        bvisited = new boolean[vCount];
     }
 
     public void display(){
@@ -49,13 +54,12 @@ public class Graph {
     for using VertexList as an input*/
 
     public void dfs(int v){
-        boolean[] visited = new boolean[vCount];
-        visited[v-1] = true;
+       dvisited[v-1] = true;
         ArrayList<Vertex> neibs = vList.get(v-1).getNeibs();
-        System.out.print(vList.get(v-1).toString()+" ");
+        System.out.print(vList.get(v-1).getName()+" ");
         for (int i = 0; i < neibs.size(); i++) {
-            int n= Integer.parseInt(neibs.get(i).toString());
-            if (!visited[n-1]){
+            int n = Integer.parseInt(neibs.get(i).toString());
+            if (!dvisited[n-1]){
                 dfs(n);
             }
         }
@@ -69,24 +73,22 @@ public class Graph {
             q.dequeue()
         }
     }
-    for usinig vertexList as an input*/
+    for using vertexList as an input*/
 
     public void bfs(int v){
-        boolean[] visited = new boolean[vCount];
-        visited[v-1] = true;
+        bvisited[v-1] = true;
         q.enqueue(v);
         while (!q.isEmpty()){
-            Integer n = q.dequeue();
-            System.out.print(vList.get(n).toString()+" ");
-            ArrayList<Vertex> neibs = vList.get(n-1).getNeibs();
+            Integer n = q.dequeue()-1;
+            System.out.print(vList.get(n).getName()+" ");
+            ArrayList<Vertex> neibs = vList.get(n).getNeibs();
             for (int i = 0; i < neibs.size(); i++) {
                 int j = Integer.parseInt(neibs.get(i).toString());
-                if (!visited[j-1]){
-                    visited[j-1] = true;
+                if (!bvisited[j-1]){
+                    bvisited[j-1] = true;
                     q.enqueue(j);
                 }
             }
         }
-
     }
 }

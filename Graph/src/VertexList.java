@@ -14,6 +14,10 @@ public class VertexList
         return name + " " + neibs;
     }
 
+    public String getName(){
+        return name;
+    }
+
     public ArrayList<Vertex> getNeibs()
     {
         return neibs;

@@ -61,9 +61,9 @@ public class BuildAdjList2
         }*/
         Graph g = new Graph(vList, vCount);
         g.display();
-        g.dfs(1);
+        g.dfs(5);
         System.out.println();
-        g.bfs(1);
+        //g.bfs(2);
     }
 
 
