@@ -1,24 +1,65 @@
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
+import java.io.*;
+import javax.swing.*;
 
 public class Graph {
 
     ArrayList<VertexList> vList;
     int vCount;
-    //Queue<VertexList> q = new Queue<>();
     Queue<Integer> q = new Queue<>();
     private boolean[] dvisited;
     private boolean[] bvisited;
 
 
-    public Graph(ArrayList<VertexList> vList, int vCount){
-        this.vList = new ArrayList<VertexList>(vList);     //(ArrayList<VertexList>)vList.clone()
-        this.vCount = vCount;
+    public Graph(){
+        this.vCount = readInteger("Number of Vertices", 1);
+
+        this.vList = new ArrayList<VertexList>(vCount);
+
+        int i;
+
+        for (i = 1; i < vCount+1; i++){
+            // Add vertex with label number, start with #1
+            vList.add(i-1, new VertexList(""+i));
+
+
+            int nCount = readInteger("Number of neighbors for vertex # " + i, 0);
+
+            ArrayList<Vertex> neibs = new ArrayList<Vertex>(nCount);
+
+            for (int k = 0; k < nCount; k++)
+            {
+                int vertexNum = readInteger("Enter neighbor # "  + (k+1) + " for vertex # " + i, 1);
+                neibs.add(new Vertex("" + vertexNum));
+            }
+            vList.get(i-1).setNeibs(neibs);
+
+        }
         dvisited = new boolean[vCount];
         bvisited = new boolean[vCount];
+        display();
     }
 
-    public void display(){
+    public Graph(String file) throws FileNotFoundException{
+        Scanner in = new Scanner(new FileReader(file+".txt"));
+        vCount = in.nextInt();
+        vList = new ArrayList<VertexList>(vCount);
+        for (int i = 1; i < vCount+1; i++) {
+            vList.add(i-1, new VertexList(""+i));
+            int nCount = in.nextInt();
+            ArrayList<Vertex> neibs = new ArrayList<Vertex>(nCount);
+            for (int j = 0; j < nCount; j++) {
+                int vertNum = in.nextInt();
+                neibs.add(new Vertex(""+vertNum));
+            }
+            vList.get(i-1).setNeibs(neibs);
+        }
+        dvisited = new boolean[vCount];
+        bvisited = new boolean[vCount];
+        display();
+    }
+
+    private void display(){
         for (int i = 1; i < vCount+1; i++)
         {
             ArrayList<Vertex> neibs = vList.get(i-1).getNeibs();
@@ -41,21 +82,10 @@ public class Graph {
         }
     }
 
-/*    public void dfs(VertexList startingVertex){
-        int i = vList.indexOf(startingVertex);
-        visited[i] = true;
-        ArrayList<Vertex> neibs = vList.get(i).getNeibs();
-        for (i = 0; i < neibs.size(); i++){
-            if (visited[vList.indexOf()]){
-                dfs(vList.indexOf());
-            }
-        }
-    }
-    for using VertexList as an input*/
-
     public void callDfs(int v){
         clearDfs();
         dfs(v);
+        System.out.println();
     }
 
     private void clearDfs() {
@@ -76,19 +106,10 @@ public class Graph {
         }
     }
 
-/*    public void bfs(int v){
-        int i = vList.indexOf(startingVertex);
-        q.enqueue(startingVertex);
-        visited[i] = true;
-        while (!q.isEmpty()){
-            q.dequeue()
-        }
-    }
-    for using vertexList as an input*/
-
     public void callBfs(int v){
         clearBfs();
         bfs(v);
+        System.out.println();
     }
 
     private void clearBfs() {
@@ -112,5 +133,24 @@ public class Graph {
                 }
             }
         }
+    }
+
+    private int readInteger(String prompt, int min) {
+
+        int val = 0;
+
+        do {
+            String ans = JOptionPane.showInputDialog(null, prompt, "");
+
+            try
+            {
+                val = Integer.parseInt(ans);
+            }
+            catch (NumberFormatException nfe) {  val = 0; }
+        }
+
+        while (val < min);
+
+        return val;
     }
 }
